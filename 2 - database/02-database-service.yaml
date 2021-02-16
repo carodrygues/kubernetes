@@ -1,0 +1,12 @@
+kind:apiVersion: v1
+kind: Service
+metadata:
+  name: mysqldb
+  namespace: aula-kubernetes
+spec:
+  selector:
+    app: mysqldb
+  ports:
+  - port: 3306
+    name: "3306"
+    protocol: TCP

@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: CondigMap
+metadata:
+  name: configmap
+  namespace: aula-kubernetes
+data:
+  TZ: "America/Sao_Paulo"

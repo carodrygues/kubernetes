@@ -1,0 +1,57 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  app: mysqldb
+  name: mysqldb
+  namespace: aula-kubernetes
+spec:
+  selector:
+    matchLabels:
+      app: mysqldb
+  serviceName: mysqldb
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: mysqldb
+    spec:
+      terminationGracePeriodSecond: 20
+      containers:
+        - env:
+          - name: MYSQL_DATABASE
+            valueFrom:
+              configMapKey:
+                name: database-configmap
+                key: MYSQL_DATABASE
+          - name: MYSQL_ROOT_PASSWORD
+            valueFrom:
+              configMapKey:
+                name: database-configmap
+                key: MYSQL_ROOT_PASSWORD
+          - name: MYSQL_TCP_PORT
+            valueFrom:
+              configMapKey:
+                name: database-configmap
+                key: MYSQL_TCP_PORT
+          - name: TZ
+            valueFrom:
+              configMapKey:
+                name: configmap
+                key: TZ
+          image: mysql:8.0
+          name: mysqldb
+          ports: 
+            - containerPort: 3306
+      volumeClaimTemplates:
+        - metadata:
+          name: db-claim
+          spec:
+            accessModes: [ "ReadWriteOnce" ]
+            storageClassName: "default"
+            resources:
+              requests:
+                storage: 2Gi
+      
+          
+
+          
